@@ -1,0 +1,2 @@
+# Graduate Custom Post Type
+A custom post type to track graduates, designed originally for the Creative Writing MFA program in the English Department, but general enough to handle other departments, if it becomes necessary. Also includes a single post and post type archive template, which can be overridden by a template in a given theme.
