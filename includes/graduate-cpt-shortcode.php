@@ -55,16 +55,24 @@ final class GraduateCPTShortcode
             'orderby' => self::_get_orderby( $a ),
         ];
 
-        if( !empty( $a['program'] ) && term_exists( $a['program'], 'category' ) ) // should work for both category slug and ID
+        if( !empty( $a['program'] ) && term_exists( $a['program'], 'graduate-programs' ) ) // should work for both category slug and ID
         {
+            $tax_query = [
+                'taxonomy' => 'graduate-programs'
+            ];
+
             if( is_numeric( $a['program'] ) )
             {
-                $args['cat'] = $a['program'];
+                $tax_query['field'] = 'term_id';
+                $tax_query['terms'] = $a['program'];
             }
             else
             {
-                $args['category_name'] = $a['program'];
+                $tax_query['field'] = 'slug';
+                $tax_query['terms'] = $a['program'];
             }
+
+            $args['tax_query'] = [ $tax_query ];
         }
 
         $query = new \WP_Query( $args );
@@ -175,7 +183,7 @@ final class GraduateCPTShortcode
 
         if( empty( $atts['program'] ) )
         {
-            $order = array_merge( ['category' => 'ASC'], $order );
+            $order = array_merge( ['graduate-programs' => 'ASC'], $order );
         }
 
         return $order;

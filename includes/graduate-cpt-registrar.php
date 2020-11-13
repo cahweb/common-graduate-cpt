@@ -32,6 +32,36 @@ final class GraduateCPTRegistrar
      */
     public static function register()
     {
+        // Register Program taxonomy
+        $tax_labels = [
+            'name' => _x( 'Program', 'taxonomy general name' ),
+            'singular_name' => _x( 'Program', 'taxonomy singluar name' ),
+            'search_items' => __( 'Search Programs' ),
+            'all_items' => __( 'All Programs' ),
+            'parent_item' => __( 'Parent Program' ),
+            'parent_item_colon' => __( 'Parent Program:' ),
+            'edit_item' => __( 'Edit Program' ),
+            'update_item' => __( 'Update Program' ),
+            'add_new_item' => __( 'Add New Program' ),
+            'new_item_name' => __( 'New Program Name' ),
+            'menu_name' => __( 'Programs' ),
+        ];
+
+        register_taxonomy(
+            'graduate-programs',
+            [ 'graduate' ],
+            [
+                'hierarchical' => true,
+                'labels' => $tax_labels,
+                'show_ui' => true,
+                'show_in_rest' => true,
+                'show_admin_column' => true,
+                'update_count_callback' => '_update_post_term_count',
+                'query_var' => true,
+                'rewrite' => [ 'slug' => 'graduate-program' ], 
+            ]
+        );
+
         // CPT labels
         $labels = apply_filters('spa_studio_cpt_labels', [
             'singular'    => 'Graduate',
@@ -443,7 +473,7 @@ final class GraduateCPTRegistrar
      */
     private static function _taxonomies(): array
     {
-        $tax = [ 'category' ];
+        $tax = [];
         $tax = apply_filters( "cah_" . self::$_type . "_cpt_taxonomies", $tax);
 
         foreach ($tax as $t) {
