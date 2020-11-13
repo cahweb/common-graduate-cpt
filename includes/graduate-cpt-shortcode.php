@@ -32,6 +32,7 @@ final class GraduateCPTShortcode
                 'program' => '',
                 'year' => '',
                 'semester' => '',
+                'img_shape' => 'circle',
             ],
             $atts
         );
@@ -82,6 +83,24 @@ final class GraduateCPTShortcode
         // For Debug
         //var_dump( $query );
 
+        $img_css = "";
+
+        switch( $a['img_shape'] )
+        {
+            case 'circle':
+                $img_css = "rounded-circle object-position-center object-fit-cover";
+                break;
+
+            case 'round-square':
+                $img_css = "rounded object-position-center object-fit-cover";
+                break;
+
+            case 'square':
+            default:
+                $img_css = "rounded-0 object-position-center object-fit-cover";
+                break;
+        }
+
         if( $query->have_posts() ) :
         ?>
             <div class="container">
@@ -97,7 +116,7 @@ final class GraduateCPTShortcode
                 ?>
                 <div class="row">
                     <div class="col-2">
-                        <img src="<?= get_the_post_thumbnail_url(); ?>" class="img-fluid size-small alignnone" width="150" height="150" alt="<?= "$fname $lname" ?>">
+                        <img src="<?= get_the_post_thumbnail_url(); ?>" class="img-fluid size-small alignnone<?= !empty( $img_css ) ? " $img_css" : "" ?>" width="150" height="150" alt="<?= "$fname $lname" ?>">
                     </div>
                     <div class="col-10">
                         <h2 class="mb-2"><?= "$fname $lname" ?></h2>
@@ -137,6 +156,8 @@ final class GraduateCPTShortcode
 
         foreach( $atts as $key => $value )
         {
+            if( 'img_shape' === $key ) continue;
+
             $new_arg = [];
             if( 'program' !== $key && !empty( $value ) )
             {

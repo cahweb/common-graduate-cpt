@@ -10,3 +10,4 @@ The CPT also supports a shortcode that will return and display a list of graduat
 * `program`: This refers to the associated graduate program, to display only graduates from a specific one. This is currently designed to use the Category feature of the post type, and will accept either the Category ID or the Category slug.
 * `year`: The graduation year (YYYY).
 * `semester`: The graduation semester (Spring, Summer, or Fall). This is case insensitive.
+* `img_shape`: What shape the headshot image should take. Options are `circle` (default), `round-square` (for a square image with rounded corners), and `square` (for a normal, square-shaped image).
