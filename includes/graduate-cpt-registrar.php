@@ -61,6 +61,9 @@ final class GraduateCPTRegistrar
      */
     public static function register_metabox()
     {
+        global $post;
+        
+        if( !is_object( $post ) || $post->post_type !== self::$_type ) return;
         // The arguments here are:
         //      - the name of the metabox
         //      - the box's title in the editor
@@ -126,8 +129,8 @@ final class GraduateCPTRegistrar
                     <?php $semester = self::_get_value( 'semester', $meta ); ?>
                     <td>
                         <select id="semester" name="semester">
-                        <?php foreach( ['-- Select One --' => '', 'Spring' => 'spring', 'Summer' => 'summer', 'Fall' => 'fall' ] as $label => $value ) : ?>
-                            <option value="<?= $value ?>"<?= $value === $semester ? " selected" : "" ?>><?= $label ?></option>
+                        <?php foreach( ['-- Select One --' => '', 'Spring' => 1, 'Summer' => 2, 'Fall' => 3 ] as $label => $value ) : ?>
+                            <option value="<?= $value ?>"<?= $value == $semester ? " selected" : "" ?>><?= $label ?></option>
                         <?php endforeach; ?>
                         </select>
                     </td>
@@ -178,12 +181,14 @@ final class GraduateCPTRegistrar
         // to their own meta field (for sorting posts in queries later on).
         foreach( $keys as $field )
         {
-            if( isset( $_POST[ $field ] ) )
+            if( isset( $_POST[$field] ) )
             {
-                $meta[$field] = $_POST[$field];
+                $value = $_POST[$field];
+
+                $meta[$field] = $value;
 
                 // Storing the fields individually for sorting purposes
-                update_post_meta( $post->ID, "graduate-$field", $_POST[$field] );
+                update_post_meta( $post->ID, "graduate-$field", $value );
             }
         }
 
@@ -251,9 +256,20 @@ final class GraduateCPTRegistrar
      */
     public static function custom_columns( string $column, $post_id )
     {
-        $meta = get_post_meta( $post_id, "graduate-$column", true );
+        $value= get_post_meta( $post_id, "graduate-$column", true );
 
-        echo ucfirst( $meta );
+        if( 'semester' === $column )
+        {
+            $lookup = [
+                1 => 'Spring',
+                2 => 'Summer',
+                3 => 'Fall',
+            ];
+
+            $value = $lookup[$value];
+        }
+
+        echo $value;
     }
 
 
@@ -355,7 +371,7 @@ final class GraduateCPTRegistrar
             'show_ui'             => true,
             'show_in_menu'        => true,
             'menu_position'       => 5,
-            'menu_icon'           => 'dashicons-buddicons-buddypress-logo',
+            'menu_icon'           => 'dashicons-businessperson',
             'show_in_admin_bar'   => true,
             'show_in_nav_menus'   => true,
             'can_export'          => true,
@@ -427,8 +443,8 @@ final class GraduateCPTRegistrar
      */
     private static function _taxonomies(): array
     {
-        $tax = array();
-        $tax = apply_filters( "spa_" . self::$_type . "_cpt_taxonomies", $tax);
+        $tax = [ 'category' ];
+        $tax = apply_filters( "cah_" . self::$_type . "_cpt_taxonomies", $tax);
 
         foreach ($tax as $t) {
             if (!taxonomy_exists($t)) {

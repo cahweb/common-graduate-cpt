@@ -5,6 +5,12 @@
 
 get_header();
 
+$semester_lookup = [
+    1 => 'Spring',
+    2 => 'Summer',
+    3 => 'Fall',
+];
+
 ?>
 
 <div class="container mt-5 mb-4">
@@ -32,7 +38,7 @@ if( have_posts() ) :
                     </div>
                     <div class="col-10">
                         <h4 class="font-condensed card-title"><?= "$fname $lname" ?></h3>
-                        <h6 class="font-slab-serif card-subtitle mb-3"><?= ucfirst( $semester ) . " $year" ?></h4>
+                        <h6 class="font-slab-serif card-subtitle mb-3"><?= $semester_lookup[$semester] . " $year" ?></h4>
                         <div class="card-text">
                             <?= the_content(); ?>
                         </div>

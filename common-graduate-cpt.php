@@ -16,6 +16,7 @@ define( 'CAH_GRADUATE_CPT__PLUGIN_URI', plugin_dir_url( __FILE__ ) );
 // Includes
 require_once 'includes/graduate-cpt-registrar.php';
 require_once 'includes/graduate-cpt-templater.php';
+require_once 'includes/graduate-cpt-shortcode.php';
 
 // Register activation and deactivation hooks
 register_activation_hook( __FILE__, function() {
@@ -30,7 +31,8 @@ register_deactivation_hook( __FILE__, function() {
 // Actions
 add_action( 'init', [ "UCF\\CAH\\WordPress\\Plugins\\Common_Graduate_CPT\\GraduateCPTRegistrar", 'register' ], 10, 0 );
 add_action( 'init', [ "UCF\\CAH\\WordPress\\Plugins\\Common_Graduate_CPT\\GraduateCPTRegistrar", 'setup_custom_columns' ], 10, 0 );
-add_action( 'init', ["UCF\\CAH\\WordPress\\Plugins\\Common_Graduate_CPT\\GraduateCPTTemplater", 'set' ], 10, 0 );
+add_action( 'init', [ "UCF\\CAH\\WordPress\\Plugins\\Common_Graduate_CPT\\GraduateCPTTemplater", 'set' ], 10, 0 );
+add_action( 'init', [ "UCF\\CAH\\WordPress\\Plugins\\Common_Graduate_CPT\\GraduateCPTShortcode", 'setup'], 10, 0 );
 add_action( 'wp_insert_post_data', ["UCF\\CAH\\WordPress\\Plugins\\Common_Graduate_CPT\\GraduateCPTRegistrar", 'change_post_title'], 99, 1 );
 
 ?>
