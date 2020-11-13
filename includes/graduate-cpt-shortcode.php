@@ -116,7 +116,7 @@ final class GraduateCPTShortcode
                 ?>
                 <div class="row">
                     <div class="col-2">
-                        <img src="<?= get_the_post_thumbnail_url(); ?>" class="img-fluid size-small alignnone<?= !empty( $img_css ) ? " $img_css" : "" ?>" style="max-height: 150; max-width: 150;" width="150" height="150" alt="<?= "$fname $lname" ?>">
+                        <img src="<?= get_the_post_thumbnail_url(); ?>" class="img-fluid size-small alignnone<?= !empty( $img_css ) ? " $img_css" : "" ?>" style="max-height: 150px; max-width: 150px;" width="150" height="150" alt="<?= "$fname $lname" ?>">
                     </div>
                     <div class="col-10">
                         <h2 class="mb-2"><?= "$fname $lname" ?></h2>
