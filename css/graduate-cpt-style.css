@@ -18,3 +18,7 @@
 .grad-text {
     grid-area: desc;
 }
+
+.wpsm_panel_group {
+    width: 100%;
+}
