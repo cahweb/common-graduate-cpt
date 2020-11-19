@@ -178,7 +178,7 @@ final class GraduateCPTShortcode
                 <?php extract( $grad ); // should give us $id, $thumbnail_url, $content, $lname, $fname, $semester, and $year ?>
 
                 <div class="row">
-                    <div class="col d-flex<?= //!empty( $thumbnail_url ) ? " grad-container" : "" ?>">
+                    <div class="col d-flex">
                     <?php if( !empty( $thumbnail_url ) ) : ?>
                         <div class="grad-image mr-3">
                             <img src="<?= $thumbnail_url ?>" class="<?= !empty( $img_css ) ? " $img_css" : "" ?>" width="150" height="150" alt="<?= "$fname $lname" ?>">
