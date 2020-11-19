@@ -20,5 +20,5 @@
 }
 
 .wpsm_panel-group {
-    width: 100%;
+    width: 100% !important;
 }
