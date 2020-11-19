@@ -1,6 +1,7 @@
 .grad-container {
     display: grid;
-    grid-template-areas: "img desc desc desc desc desc desc";
+    grid-template-areas: "img desc desc desc desc desc";
+    column-gap: 3em;
 }
 
 .grad-image {
@@ -14,6 +15,6 @@
     max-height: 150px;
 }
 
-.grad-content {
+.grad-text {
     grid-area: desc;
 }

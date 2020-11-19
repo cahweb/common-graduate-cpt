@@ -178,16 +178,16 @@ final class GraduateCPTShortcode
                 <?php extract( $grad ); // should give us $id, $thumbnail_url, $content, $lname, $fname, $semester, and $year ?>
 
                 <div class="row">
-                    <div class="col grad-container">
+                    <div class="col<?= !empty( $thumbnail_url ) ? " grad-container" : "" ?>">
                     <?php if( !empty( $thumbnail_url ) ) : ?>
                         <div class="grad-image">
                             <img src="<?= $thumbnail_url ?>" class="<?= !empty( $img_css ) ? " $img_css" : "" ?>" width="150" height="150" alt="<?= "$fname $lname" ?>">
                         </div>
                     <?php endif; ?>
-                        <div class="<?= !empty( $thumbnail_url ) ? "grad-content" : "" ?>">
+                        <div class="<?= !empty( $thumbnail_url ) ? "grad-text" : "" ?>">
                             <h3 class="mb-2"><?= "$fname $lname" ?></h3>
                             <h5 class="font-weight-normal font-italic"><?= $semester_lookup[$semester] . " $year" ?></h5>
-                            <div>
+                            <div class="grad-content">
                                 <?= apply_filters( 'the_content', $content ); ?>
                             </div>
                         </div>
