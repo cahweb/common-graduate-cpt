@@ -1,24 +1,4 @@
-.grad-container {
-    display: grid;
-    grid-template-areas: "img desc desc desc desc desc";
-    column-gap: 3em;
-}
-
-.grad-image {
-    grid-area: img;
-    display: flex;
-    justify-content: center;
-}
-
 .grad-image img {
-    max-width: 150px;
-    max-height: 150px;
-}
-
-.grad-text {
-    grid-area: desc;
-}
-
-.wpsm_panel-group {
-    width: 100% !important;
+    max-width: 150;
+    max-height: 150;
 }

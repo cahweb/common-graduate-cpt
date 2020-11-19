@@ -24,9 +24,9 @@ final class GraduateCPTShortcode
     {
         wp_register_style(
             'graduate-cpt-style',
-            CAH_GRADUATE_CPT__PLUGIN_URI . "/css/graduate-cpt-style.css",
+            CAH_GRADUATE_CPT__PLUGIN_URI . "/css/graduate-cpt-style-2.css",
             [],
-            filemtime( CAH_GRADUATE_CPT__PLUGIN_DIR . "/css/graduate-cpt-style.css" ),
+            filemtime( CAH_GRADUATE_CPT__PLUGIN_DIR . "/css/graduate-cpt-style-2.css" ),
             'all'
         );
     }
@@ -178,9 +178,9 @@ final class GraduateCPTShortcode
                 <?php extract( $grad ); // should give us $id, $thumbnail_url, $content, $lname, $fname, $semester, and $year ?>
 
                 <div class="row">
-                    <div class="col<?= !empty( $thumbnail_url ) ? " grad-container" : "" ?>">
+                    <div class="col d-flex<?= //!empty( $thumbnail_url ) ? " grad-container" : "" ?>">
                     <?php if( !empty( $thumbnail_url ) ) : ?>
-                        <div class="grad-image">
+                        <div class="grad-image mr-3">
                             <img src="<?= $thumbnail_url ?>" class="<?= !empty( $img_css ) ? " $img_css" : "" ?>" width="150" height="150" alt="<?= "$fname $lname" ?>">
                         </div>
                     <?php endif; ?>
