@@ -1,0 +1,19 @@
+.grad-container {
+    display: grid;
+    grid-template-areas: "img desc desc desc desc desc desc";
+}
+
+.grad-image {
+    grid-area: img;
+    display: flex;
+    justify-content: center;
+}
+
+.grad-image img {
+    max-width: 150px;
+    max-height: 150px;
+}
+
+.grad-content {
+    grid-area: desc;
+}

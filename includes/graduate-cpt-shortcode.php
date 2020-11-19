@@ -14,7 +14,34 @@ final class GraduateCPTShortcode
 
     public static function setup()
     {
+        add_action( 'wp_enqueue_scripts', [ __CLASS__, 'register_scripts' ], 5, 0 );
+        add_action( 'wp_enqueue_scripts', [ __CLASS__, 'maybe_enqueue_scripts' ], 10, 0 );
         add_shortcode( 'graduate-list', [ __CLASS__, 'shortcode' ] );
+    }
+
+
+    public static function register_scripts()
+    {
+        wp_register_style(
+            'graduate-cpt-style',
+            CAH_GRADUATE_CPT__PLUGIN_URI . "/css/graduate-cpt-style.css",
+            [],
+            filemtime( CAH_GRADUATE_CPT__PLUGIN_DIR . "/css/graduate-cpt-style.css" ),
+            'all'
+        );
+    }
+
+
+    public static function maybe_enqueue_scripts()
+    {
+        global $post;
+
+        if( !is_object( $post ) ) return;
+
+        if( 'graduate' === $post->post_type || stripos( $post->post_content, '[graduate-list' ) !== false )
+        {
+            wp_enqueue_style( 'graduate-cpt-style' );
+        }
     }
 
 
@@ -78,6 +105,104 @@ final class GraduateCPTShortcode
 
         $query = new \WP_Query( $args );
 
+        // Sorting manually by name, since the query doesn't seem to do it
+        $graduates = [];
+
+        // We're going to have to do some extra steps if we have multiple semesters and/or years, so I'm
+        // doing this for the moment so I don't mess up any of the other bits of functionality
+        if( !empty( $a['semester'] ) && !empty( $a['year'] ) )
+        {
+            // First we'll have to get all the results into a form we can use
+            if( $query->have_posts() )
+            {
+                while( $query->have_posts() )
+                {
+                    $query->the_post();
+
+                    $meta = maybe_unserialize( get_post_meta( get_the_ID(), 'graduate-info', true ) );
+
+                    $grad = [
+                        'id' => get_the_ID(),
+                        'thumbnail_url' => get_the_post_thumbnail_url( get_the_ID() ),
+                        'content' => get_the_content(),
+                    ];
+
+                    foreach( $meta as $key => $value )
+                    {
+                        $grad[$key] = $value;
+                    }
+
+                    $graduates[] = $grad;
+                }
+            }
+
+            uasort( $graduates, function( $a, $b ) {
+
+                if( strcasecmp( $a['lname'], $b['lname'] ) === 0 )
+                {
+                    return $a['fname'] <=> $b['fname'];
+                }
+                else
+                {
+                    return $a['lname'] <=> $b['lname'];
+                }
+            });
+        }
+
+        if( !empty( $graduates ) )
+        {
+            $img_css = "";
+
+            switch( $a['img_shape'] )
+            {
+                case 'circle':
+                    $img_css = "rounded-circle object-position-center object-fit-cover";
+                    break;
+
+                case 'round-square':
+                    $img_css = "rounded object-position-center object-fit-cover";
+                    break;
+
+                case 'square':
+                default:
+                    $img_css = "rounded-0 object-position-center object-fit-cover";
+                    break;
+            }
+
+            ob_start();
+            ?>
+
+            <div class="container">
+            <?php foreach( $graduates as $grad ) : ?>
+
+                <?php extract( $grad ); // should give us $id, $thumbnail_url, $content, $lname, $fname, $semester, and $year ?>
+
+                <div class="row">
+                    <div class="col grad-container">
+                    <?php if( !empty( $thumbnail_url ) ) : ?>
+                        <div class="grad-image">
+                            <img src="<?= $thumbnail_url ?>" class="<?= !empty( $img_css ) ? " $img_css" : "" ?>" width="150" height="150" alt="<?= "$fname $lname" ?>">
+                        </div>
+                    <?php endif; ?>
+                        <div class="<?= !empty( $thumbnail_url ) ? "grad-content" : "" ?>">
+                            <h3 class="mb-2"><?= "$fname $lname" ?></h3>
+                            <h5 class="font-weight-normal font-italic"><?= $semester_lookup[$semester] . " $year" ?></h5>
+                            <div>
+                                <?= apply_filters( 'the_content', $content ); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mt-4 mb-5" />
+
+            <?php endforeach; ?>
+            </div>
+
+            <?php
+            return ob_get_clean();
+        }
+
         ob_start();
 
         // For Debug
@@ -119,8 +244,8 @@ final class GraduateCPTShortcode
                         <img src="<?= get_the_post_thumbnail_url(); ?>" class="img-fluid size-small alignnone<?= !empty( $img_css ) ? " $img_css" : "" ?>" style="max-height: 150px; max-width: 150px;" width="150" height="150" alt="<?= "$fname $lname" ?>">
                     </div>
                     <div class="col-10">
-                        <h2 class="mb-2"><?= "$fname $lname" ?></h2>
-                        <h4 class="font-weight-normal font-italic"><?= $semester_lookup[$semester] . " $year" ?></h4>
+                        <h3 class="mb-2"><?= "$fname $lname" ?></h3>
+                        <h5 class="font-weight-normal font-italic"><?= $semester_lookup[$semester] . " $year" ?></h5>
                         <div>
                             <?= the_content(); ?>
                         </div>
