@@ -24,9 +24,9 @@ final class GraduateCPTShortcode
     {
         wp_register_style(
             'graduate-cpt-style',
-            CAH_GRADUATE_CPT__PLUGIN_URI . "/css/graduate-cpt-style-2.css",
+            CAH_GRADUATE_CPT__PLUGIN_URI . "/css/graduate-cpt-style.css",
             [],
-            filemtime( CAH_GRADUATE_CPT__PLUGIN_DIR . "/css/graduate-cpt-style-2.css" ),
+            filemtime( CAH_GRADUATE_CPT__PLUGIN_DIR . "/css/graduate-cpt-style.css" ),
             'all'
         );
     }
