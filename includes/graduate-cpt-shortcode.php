@@ -180,7 +180,7 @@ final class GraduateCPTShortcode
                 <div class="row">
                     <div class="col d-flex">
                     <?php if( !empty( $thumbnail_url ) ) : ?>
-                        <div class="grad-image mr-3">
+                        <div class="grad-image mr-5">
                             <img src="<?= $thumbnail_url ?>" class="<?= !empty( $img_css ) ? " $img_css" : "" ?>" width="150" height="150" alt="<?= "$fname $lname" ?>">
                         </div>
                     <?php endif; ?>
